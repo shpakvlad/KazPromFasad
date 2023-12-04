@@ -1,15 +1,3 @@
-// const prices = {
-//     base: 2000,
-//     cm1: 0,
-//     cm2: 1000,
-//     cm3: 2000,
-//     cm4: 3000,
-//     colorNone: 0,
-//     colorDark: 2000,
-//     colorLight: 3000,
-//     dekarat: 500,
-// };
-
 const prices = {
     brick: {
         base: 2000,
@@ -22,17 +10,16 @@ const prices = {
         colorLight: 3000,
         dekarat: 500,
     },
-
     corona: {
-        base: 2000,
+        base: 1000,
         cm1: 0,
-        cm2: 1000,
-        cm3: 2000,
-        cm4: 3000,
+        cm2: 700,
+        cm3: 1200,
+        cm4: 1600,
         colorNone: 0,
-        colorDark: 2000,
-        colorLight: 3000,
-        dekarat: 500,
+        colorDark: 1000,
+        colorLight: 1500,
+        dekarat: 300,
     },
 };
 
@@ -44,11 +31,28 @@ let nThick = 0;
 let nColor = 0;
 let nDekarat = 0;
 
-// let byuBtn = document.querySelector("input[value='Buy']");
 const thickRadio = document.querySelectorAll(".thick-box input");
 const colorsRadio = document.querySelectorAll(".color-box input");
 let dekaratChk = document.querySelectorAll(".options-box input");
 let priceText = document.querySelectorAll(".price");
+let cards = document.querySelectorAll(".card");
+let price = {};
+
+function changePrices(priceSet) {
+    // let price = c.dataset.card;
+    switch (priceSet) {
+        case 'brick':
+            price = prices.brick;  
+            console.log(price);              
+            break;
+        case 'corona':
+            price = prices.corona;  
+            console.log(price);              
+            break;        
+        default:
+            break;
+    } 
+}
 
 for (const t of thickRadio) {
     t.addEventListener("click", function () {
@@ -56,26 +60,26 @@ for (const t of thickRadio) {
             this.parentNode.parentNode.children[6].children[0].textContent
         );
         let parentData = this.parentNode.dataset.thickPrice;
-
-        console.log(finalPrice);
+        let priceSet = this.parentNode.parentNode.dataset.card;
+        changePrices(priceSet);
 
         if (this.checked) {
             if (this.value == "1cm") {
                 finalPrice -= Number(parentData);
-                finalPrice += prices.brick.cm1;
-                this.parentNode.dataset.thickPrice = prices.brick.cm1;
+                finalPrice += price.cm1;
+                this.parentNode.dataset.thickPrice = price.cm1;
             } else if (this.value == "2cm") {
                 finalPrice -= Number(parentData);
-                finalPrice += prices.brick.cm2;
-                this.parentNode.dataset.thickPrice = prices.brick.cm2;
+                finalPrice += price.cm2;
+                this.parentNode.dataset.thickPrice = price.cm2;
             } else if (this.value == "3cm") {
                 finalPrice -= Number(parentData);
-                finalPrice += prices.brick.cm3;
-                this.parentNode.dataset.thickPrice = prices.brick.cm3;
+                finalPrice += price.cm3;
+                this.parentNode.dataset.thickPrice = price.cm3;
             } else if (this.value == "4cm") {
                 finalPrice -= Number(parentData);
-                finalPrice += prices.brick.cm4;
-                this.parentNode.dataset.thickPrice = prices.brick.cm4;
+                finalPrice += price.cm4;
+                this.parentNode.dataset.thickPrice = price.cm4;
             }
         }
         this.parentNode.parentNode.children[6].children[0].textContent =
@@ -89,20 +93,22 @@ for (const c of colorsRadio) {
             this.parentNode.parentNode.children[6].children[0].textContent
         );
         let parentData = Number(this.parentNode.dataset.colorPrice);
+        let priceSet = this.parentNode.parentNode.dataset.card;
+        changePrices(priceSet);
 
         if (this.checked) {
             if (this.value == "none") {
                 finalPrice -= Number(parentData);
-                finalPrice += prices.brick.colorNone;
-                this.parentNode.dataset.colorPrice = prices.brick.colorNone;
+                finalPrice += price.colorNone;
+                this.parentNode.dataset.colorPrice = price.colorNone;
             } else if (this.value == "dark") {
                 finalPrice -= Number(parentData);
-                finalPrice += prices.brick.colorDark;
-                this.parentNode.dataset.colorPrice = prices.brick.colorDark;
+                finalPrice += price.colorDark;
+                this.parentNode.dataset.colorPrice = price.colorDark;
             } else if (this.value == "light") {
                 finalPrice -= Number(parentData);
-                finalPrice += prices.brick.colorLight;
-                this.parentNode.dataset.colorPrice = prices.brick.colorLight;
+                finalPrice += price.colorLight;
+                this.parentNode.dataset.colorPrice = price.colorLight;
             }
         }
         this.parentNode.parentNode.children[6].children[0].textContent =
@@ -112,18 +118,20 @@ for (const c of colorsRadio) {
 
 for (const dekarat of dekaratChk) {
     dekarat.addEventListener("click", function () {
+
+        let priceSet = this.parentNode.parentNode.dataset.card;
+        changePrices(priceSet);
+
         finalPrice = Number(
             this.parentNode.parentNode.children[6].children[0].textContent
         );
         let parentData = Number(this.parentNode.dataset.dekaratPrice);
 
         if (this.checked) {
-            // finalPrice -= Number(parentData);;
-            finalPrice += prices.brick.dekarat;
-            this.parentNode.dataset.dekaratPrice = prices.brick.dekarat;
+            finalPrice += price.dekarat;
+            this.parentNode.dataset.dekaratPrice = price.dekarat;
         } else {
-            // finalPrice -= Number(parentData);;
-            finalPrice -= prices.brick.dekarat;
+            finalPrice -= price.dekarat;
             this.parentNode.dataset.dekaratPrice = 0;
         }
         this.parentNode.parentNode.children[6].children[0].textContent =
